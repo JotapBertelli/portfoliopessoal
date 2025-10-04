@@ -1,0 +1,24 @@
+# Dependências
+/node_modules
+
+# Build de produção
+/dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.*.local
+
+# Arquivos de editor e sistema
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

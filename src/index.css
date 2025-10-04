@@ -1,0 +1,629 @@
+:root {
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-accent: #06b6d4;
+  --color-secondary: rgba(255, 255, 255, 0.15);
+  --color-bg: #f3f4f6;
+  --color-card-bg: rgba(255, 255, 255, 0.25);
+  --color-text: #111827;
+  --color-text-light: #6b7280;
+  --radius: 1rem;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --blur: 20px;
+  --font-base: 'Inter', sans-serif;
+  --transition-speed: 0.3s;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0f172a;
+  --color-card-bg: rgba(30, 41, 59, 0.6);
+  --color-text: #f8fafc;
+  --color-text-light: #94a3b8;
+  --color-secondary: rgba(255, 255, 255, 0.1);
+}
+
+/* Corpo */
+body {
+  font-family: var(--font-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: background var(--transition-speed), color var(--transition-speed);
+}
+
+/* Navbar */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backdrop-filter: blur(var(--blur));
+  background: var(--color-card-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  box-shadow: var(--shadow);
+  z-index: 50;
+}
+
+nav .container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav h1 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width 0.3s;
+}
+
+nav a:hover {
+  color: var(--color-primary);
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* Hero */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: radial-gradient(circle at top, #eef2ff, #c7d2fe);
+}
+
+[data-theme="dark"] .hero {
+  background: radial-gradient(circle at top, #1e293b, #0f172a);
+}
+
+.hero h2 {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  color: var(--color-text-light);
+}
+
+.hero .buttons a {
+  padding: 0.9rem 2rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero .primary {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.hero .primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.hero .secondary {
+  background: var(--color-card-bg);
+  color: var(--color-text);
+  backdrop-filter: blur(var(--blur));
+}
+
+.hero .secondary:hover {
+  transform: translateY(-3px);
+}
+
+/* Seções */
+section {
+  max-width: 1100px;
+  margin: auto;
+  padding: 6rem 2rem;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+section h3 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+section h3::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 2px;
+}
+
+/* Skills */
+/* O container que organiza as habilidades em uma grade responsiva */
+.skills-grid {
+  display: grid;
+  /* Cria colunas que se ajustam ao tamanho da tela */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem; /* Espaçamento entre os cards de habilidade */
+}
+
+/* O card para cada habilidade individual */
+.skill-item {
+  display: flex;
+  align-items: center; /* Alinha o ícone e o texto verticalmente */
+  gap: 0.8rem;         /* Cria um espaço entre a imagem e o texto */
+
+  background-color: var(--card-bg); /* Usa a cor de fundo do seu tema */
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efeito de hover para dar interatividade */
+.skill-item:hover {
+  transform: translateY(-5px); /* Eleva o card levemente */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para a imagem do ícone */
+.skill-item img {
+  width: 32px;  /* Largura fixa para todos os ícones */
+  height: 32px; /* Altura fixa para todos os ícones */
+  object-fit: contain; /* Garante que a imagem não fique distorcida */
+}
+
+/* Estilo para o texto da habilidade */
+.skill-item span {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+/* Projetos */
+.projects-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card {
+  padding: 2rem;
+  border-radius: var(--radius);
+  background: var(--color-card-bg);
+  backdrop-filter: blur(var(--blur));
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+/* Footer */
+footer {
+  background: var(--color-secondary);
+  backdrop-filter: blur(var(--blur));
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin-top: 4rem;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.icon {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.15);
+}
+
+/* Container centralizado */
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Email estilizado */
+.contact-email {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-email:hover {
+  color: var(--color-primary);
+}
+
+/* Ícones sociais */
+.social-icons {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-card-bg);
+  padding: 8px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.15);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+/* Imagem dentro do card */
+.project-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+/* Overlay do popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Conteúdo do popup */
+.popup-content {
+  position: relative;
+  /* Define um tamanho máximo para o container da imagem, com um respiro das bordas da tela */
+  max-width: 95vw; /* 95% da largura da tela */
+  max-height: 95vh; /* 95% da altura da tela */
+
+  /* Usa flexbox para garantir o alinhamento, caso precise adicionar outros elementos */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Imagem em fullscreen */
+.popup-image {
+  /* Removemos as regras antigas e deixamos apenas as essenciais */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* ESSENCIAL: Redimensiona a imagem para caber no container sem cortar ou distorcer */
+  display: block; /* Garante que a imagem se comporte corretamente */
+}
+
+/* Botão de fechar (pequeno ajuste para posicionar relativo à imagem) */
+.popup-close {
+  position: absolute;
+  top: -10px; /* Posição um pouco acima do container da imagem */
+  right: -5px;
+  font-size: 40px; /* Ajuste de tamanho para o novo posicionamento */
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, color 0.2s;
+  /* Adiciona uma sombra para melhor visibilidade contra a imagem */
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.8);
+}
+
+.popup-close:hover {
+  transform: scale(1.2);
+  color: #ff4d4d; /* Cor mais viva no hover */
+}
+
+/* === CSS DA GALERIA DENTRO DO CARD === */
+
+/* Container para a imagem e as setas */
+.gallery-container {
+  position: relative; /* Essencial para posicionar as setas */
+  width: 100%;
+  height: 180px; /* Mesma altura da sua .project-image original */
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  overflow: hidden; /* Garante que as bordas fiquem arredondadas */
+}
+
+/* A imagem principal dentro da galeria */
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Setas de navegação */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 40px; /* Alinha o caractere da seta verticalmente */
+}
+
+.nav-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.nav-arrow.prev {
+  left: 10px;
+}
+
+.nav-arrow.next {
+  right: 10px;
+}
+
+/* Container para os pontinhos */
+.dots-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+/* Estilo de cada pontinho */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Pontinho ativo (imagem atual) */
+.dot.active {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+/* Animação leve */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ========================================================================== */
+/* ============      CSS CORRIGIDO PARA O MENU HAMBÚRGUER      ================ */
+/* ========================================================================== */
+
+/* Botão do menu (o ícone em si) */
+.hamburger-button {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 2rem;
+  cursor: pointer;
+
+  /* --- CORREÇÃO PRINCIPAL AQUI --- */
+  position: relative; /* Ativa o z-index para o botão */
+  z-index: 11000;     /* Valor ALTO para ficar ACIMA de tudo */
+}
+
+/* O painel do menu que desliza na tela */
+/* O painel do menu que desliza na tela (MODIFICADO) */
+.mobile-nav-links {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  max-width: 300px;
+  height: 100vh;
+
+  /* --- ALTERAÇÕES AQUI --- */
+  background-color: #FFFFFF; /* Cor de fundo sólida branca */
+  backdrop-filter: none;       /* Remove o efeito de vidro/blur */
+  /* ---------------------- */
+
+  box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 10500;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.mobile-nav-links.open {
+  transform: translateX(0);
+}
+
+/* Fundo escurecido quando o menu está aberto */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  z-index: 10400; /* Valor mais baixo, fica atrás de tudo */
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Links (sem alteração) */
+.mobile-nav-links a {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 1rem;
+}
+
+
+/* ========================================================================== */
+/* ============     MEDIA QUERIES PARA RESPONSIVIDADE (CORRIGIDO) ============ */
+/* ========================================================================== */
+
+/* Para tablets e celulares (telas com 768px de largura ou menos) */
+@media (max-width: 768px) {
+
+  /* --- GERAL --- */
+  section {
+    padding: 4rem 1rem; /* Diminui o espaçamento das seções em telas menores */
+  }
+
+  /* --- NAVBAR --- */
+  nav .container {
+    padding: 1rem; /* Ajusta o padding do navbar */
+  }
+
+  /* O seletor original era 'nav .desktop-nav-links', mas no seu JSX,
+     os links e o botão estão dentro de uma <div> simples.
+     Vamos esconder essa div diretamente. */
+  nav .container > div {
+    display: none;
+  }
+
+  .hamburger-button {
+    display: block; /* Mostra o botão do menu hambúrguer */
+  }
+
+  /* --- HERO --- */
+  .hero {
+    padding: 1rem; /* Ajusta o padding do hero */
+  }
+
+  .hero h2 {
+    font-size: 2.5rem; /* Ajusta o tamanho da fonte principal */
+  }
+
+  .hero p {
+    font-size: 1.1rem; /* Ajusta o tamanho da fonte secundária */
+  }
+
+  .hero .buttons {
+    display: flex; /* Garante que é um container flex */
+    flex-direction: column; /* Empilha os botões verticalmente */
+    align-items: center;
+    width: 100%;
+    gap: 1rem; /* Adiciona um espaço entre os botões empilhados */
+  }
+
+  .hero .buttons a {
+    width: 90%; /* Faz os botões ocuparem mais espaço */
+    max-width: 350px;
+    text-align: center;
+  }
+
+  /* --- GRIDS (Skills e Projetos) --- */
+  .skills-grid,
+  .projects-grid {
+    grid-template-columns: 1fr; /* Força uma única coluna, o que já estava correto */
+  }
+
+  /* --- EXPERIÊNCIA --- */
+  /* A classe '.experience' é um container. Vamos forçá-lo
+     a ser um grid de uma coluna para empilhar os cards. */
+  .experience {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem; /* Adiciona um espaço entre os cards de experiência */
+  }
+
+  /* --- CONTATO --- */
+  .contact-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-email {
+      font-size: 1rem; /* Ajusta o tamanho do email para caber melhor */
+  }
+}
