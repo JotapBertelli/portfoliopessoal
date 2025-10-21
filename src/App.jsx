@@ -1,153 +1,248 @@
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from "react";
-import "./index.css";
-// IMPORTAÇÕES ADICIONADAS PARA O MENU
 import { FaBars, FaTimes } from "react-icons/fa";
 
 /* ========================================================================== */
 /* ============           COMPONENTES REUTILIZÁVEIS          ================ */
 /* ========================================================================== */
 
-// NAVBAR ATUALIZADA COM LÓGICA DE MENU HAMBÚRGUER E RESPONSIVIDADE
 const Navbar = ({ toggleTheme }) => {
-  // Novo estado para controlar se o menu mobile está aberto ou fechado
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Função para fechar o menu (será usada nos links)
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <nav>
+    <nav className={scrolled ? "scrolled" : ""}>
       <div className="container">
-        <h1>João Bertelli</h1>
+        <h1 className="logo">João Bertelli</h1>
 
-        {/* Links para telas grandes (desktop) */}
         <div className="desktop-nav-links">
           <a href="#about">Sobre</a>
           <a href="#skills">Skills</a>
           <a href="#projects">Projetos</a>
           <a href="#experience">Experiência</a>
           <a href="#contact">Contato</a>
-          <button onClick={toggleTheme} style={{ marginLeft: "1rem" }}>🌙</button>
+          <button onClick={toggleTheme} className="theme-toggle">
+            <span className="theme-icon">🌙</span>
+          </button>
         </div>
 
-        {/* Botão do menu hambúrguer (só aparece no mobile) */}
         <button className="hamburger-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
           {isMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
       </div>
 
-      {/* Painel do menu mobile */}
       <div className={`mobile-nav-links ${isMenuOpen ? 'open' : ''}`}>
         <a href="#about" onClick={closeMenu}>Sobre</a>
         <a href="#skills" onClick={closeMenu}>Skills</a>
         <a href="#projects" onClick={closeMenu}>Projetos</a>
         <a href="#experience" onClick={closeMenu}>Experiência</a>
         <a href="#contact" onClick={closeMenu}>Contato</a>
-        <button onClick={toggleTheme}>Mudar Tema 🌙</button>
+        <button onClick={() => { toggleTheme(); closeMenu(); }} className="mobile-theme-btn">
+          Mudar Tema 🌙
+        </button>
       </div>
+
+      {isMenuOpen && <div className="menu-backdrop" onClick={closeMenu}></div>}
     </nav>
   );
 };
 
+const Hero = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-const Hero = () => (
-  <section className="hero">
-    <h2>João Pedro da Silva Bertelli</h2>
-    <p>Desenvolvedor Júnior • Python • Flask • React • JavaScript</p>
-    <div className="buttons">
-      <a href="#projects" className="primary">Ver Projetos</a>
-      <a href="/Curriculo_Joao_Bertelli.docx" download className="secondary">Download CV</a>
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return (
+    <section className="hero">
+      <div
+        className="hero-glow"
+        style={{
+          left: `${mousePosition.x}px`,
+          top: `${mousePosition.y}px`,
+        }}
+      ></div>
+      <div className="hero-content">
+        <div className="hero-badge">Desenvolvedor Full Stack</div>
+        <h2 className="hero-title">
+          João Pedro da Silva <span className="gradient-text">Bertelli</span>
+        </h2>
+        <p className="hero-subtitle">
+          Transformando ideias em <span className="highlight">experiências digitais</span> incríveis
+        </p>
+        <div className="hero-tech-stack">
+          <span>Python</span>
+          <span>Flask</span>
+          <span>React</span>
+          <span>JavaScript</span>
+          <span>MySQL</span>
+        </div>
+        <div className="buttons">
+          <a href="#projects" className="primary">
+            <span>Ver Projetos</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 10L13 10M13 10L10 7M13 10L10 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </a>
+          <a href="/Curriculo_Joao_Bertelli.docx" download className="secondary">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 3V13M10 13L13 10M10 13L7 10M3 17H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            <span>Download CV</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Section = ({ id, title, children, className = "" }) => (
+  <section id={id} className={`section ${className}`}>
+    <div className="section-header">
+      <h3 className="section-title">{title}</h3>
+      <div className="section-line"></div>
     </div>
-  </section>
-);
-
-const Section = ({ id, title, children }) => (
-  <section id={id}>
-    <h3>{title}</h3>
     {children}
   </section>
 );
 
-// O componente Skill foi removido pois você está usando HTML/JSX diretamente
-// const Skill = ({ name }) => <div className="skill">{name}</div>;
+const SkillCard = ({ name, icon, level }) => (
+  <div className="skill-card">
+    <div className="skill-icon-wrapper">
+      <img src={icon} alt={name} className="skill-icon" />
+      <div className="skill-glow"></div>
+    </div>
+    <span className="skill-name">{name}</span>
+    <div className="skill-level">
+      <div className="skill-level-fill" style={{ width: level }}></div>
+    </div>
+  </div>
+);
 
-const Card = ({ title, subtitle, children, images, onImageClick }) => {
+const ProjectCard = ({ title, subtitle, description, images, tags, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const hasImages = Array.isArray(images) && images.length > 0;
 
   const goToPrevious = (e) => {
     e.stopPropagation();
-    const isFirstImage = currentIndex === 0;
-    const newIndex = isFirstImage ? images.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
+    setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
   };
 
   const goToNext = (e) => {
     e.stopPropagation();
-    const isLastImage = currentIndex === images.length - 1;
-    const newIndex = isLastImage ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
+    setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
   };
 
-  const goToIndex = (index) => {
-    setCurrentIndex(index);
-  }
-
   return (
-    <div className="card">
-      {hasImages ? (
-        <div className="gallery-container">
+    <div className="project-card">
+      {hasImages && (
+        <div className="project-gallery">
           {images.length > 1 && (
             <>
-              <button onClick={goToPrevious} className="nav-arrow prev">‹</button>
-              <button onClick={goToNext} className="nav-arrow next">›</button>
+              <button onClick={goToPrevious} className="gallery-arrow prev">‹</button>
+              <button onClick={goToNext} className="gallery-arrow next">›</button>
             </>
           )}
           <img
             src={images[currentIndex]}
             alt={title}
-            className="gallery-image"
-            onClick={() => onImageClick({ src: images[currentIndex], title: title })}
+            className="project-image"
+            onClick={() => onImageClick({ src: images[currentIndex], title })}
           />
           {images.length > 1 && (
-            <div className="dots-container">
+            <div className="gallery-dots">
               {images.map((_, index) => (
                 <span
                   key={index}
-                  className={`dot ${currentIndex === index ? 'active' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    goToIndex(index);
-                  }}
+                  className={`gallery-dot ${currentIndex === index ? 'active' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); setCurrentIndex(index); }}
                 ></span>
               ))}
             </div>
           )}
+          <div className="project-overlay"></div>
         </div>
-      ) : null}
-      <h4>{title}</h4>
-      <p>{subtitle}</p>
-      {children}
+      )}
+      <div className="project-content">
+        <h4 className="project-title">{title}</h4>
+        <p className="project-subtitle">{subtitle}</p>
+        <p className="project-description">{description}</p>
+        {tags && (
+          <div className="project-tags">
+            {tags.map((tag, index) => (
+              <span key={index} className="project-tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
+const ExperienceCard = ({ title, company, period, description, achievements }) => (
+  <div className="experience-card">
+    <div className="experience-header">
+      <div>
+        <h4 className="experience-title">{title}</h4>
+        <p className="experience-company">{company}</p>
+      </div>
+      <span className="experience-period">{period}</span>
+    </div>
+    <p className="experience-description">{description}</p>
+    {achievements && (
+      <ul className="experience-achievements">
+        {achievements.map((achievement, index) => (
+          <li key={index}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 10L9 12L13 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            {achievement}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+);
+
 const useScrollAnimation = () => {
   useEffect(() => {
-    const handleScroll = () => {
-      const elements = document.querySelectorAll("section, .card, .skill-item");
-      elements.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        if (top < windowHeight - 100) {
-          el.style.opacity = 1;
-          el.style.transform = "translateY(0)";
-        }
-      });
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    const elements = document.querySelectorAll(".section, .skill-card, .project-card, .experience-card");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
   }, []);
 };
 
@@ -156,15 +251,14 @@ const useScrollAnimation = () => {
 /* ========================================================================== */
 
 export default function App() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
   const [popupData, setPopupData] = useState(null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
-  const toggleTheme = () =>
-    setTheme(prev => (prev === "light" ? "dark" : "light"));
+  const toggleTheme = () => setTheme(prev => (prev === "light" ? "dark" : "light"));
 
   useScrollAnimation();
 
@@ -172,125 +266,165 @@ export default function App() {
   const closePopup = () => setPopupData(null);
 
   return (
-    <div>
+    <div className="app">
       <Navbar toggleTheme={toggleTheme} />
       <Hero />
 
       <Section id="about" title="Sobre Mim">
-        <p>
-          Sempre gostei de tecnologia e de buscar soluções práticas através da programação. Minha trajetória começou no SENAI, onde me formei em Análise e Desenvolvimento de Sistemas. Durante esse período, tive a oportunidade de atuar como Jovem Aprendiz na ArcelorMittal, trabalhando como programador de sistemas da informação, o que me deu experiência em lidar com demandas reais do ambiente corporativo.
-
-Desde então, venho me aprofundando no desenvolvimento web, com foco em Front-end e integração com Back-end, criando aplicações completas com React.js, Django e Flask, além de sistemas CRUD com autenticação e APIs REST, utilizando também versionamento com GitHub e Gitflow, e metodologias ágeis com Scrum e Kamban. Já participei de projetos educacionais e corporativos que uniram prática, inovação e trabalho em equipe com metodologias ágeis.
-
-Atualmente, estou cursando Engenharia de Software, com o objetivo de expandir minha visão arquitetural e aprofundar meu conhecimento em desenvolvimento de sistemas de maior escala. Busco sempre aplicar boas práticas, aprender novas tecnologias e contribuir para soluções que realmente façam a diferença.
-        </p>
-      </Section>
-
-      <Section id="skills" title="Habilidades">
-        <div className="skills-grid">
-          <div className="skill-item">
-            <img src="./img/python.png" alt="Ícone Python" />
-            <span>Python / Flask</span>
+        <div className="about-content">
+          <div className="about-text">
+            <p>
+              Sou um desenvolvedor apaixonado por tecnologia e por criar soluções práticas através da programação.
+              Minha jornada começou no <strong>SENAI</strong>, onde me formei em Análise e Desenvolvimento de Sistemas,
+              e se consolidou durante minha experiência como Jovem Aprendiz na <strong>ArcelorMittal</strong>.
+            </p>
+            <p>
+              Hoje, mergulho fundo no desenvolvimento web, com foco em <strong>Front-end e Back-end</strong>,
+              criando aplicações completas com <strong>React.js</strong>, <strong>Django</strong> e <strong>Flask</strong>.
+              Domino sistemas CRUD, autenticação, APIs REST e ferramentas essenciais como Git, GitHub e metodologias ágeis.
+            </p>
+            <p>
+              Atualmente cursando <strong>Engenharia de Software</strong>, busco expandir minha visão arquitetural
+              e contribuir para projetos que realmente façam a diferença no mundo digital.
+            </p>
           </div>
-          <div className="skill-item">
-            <img src="./img/js.png" alt="Ícone JavaScript" />
-            <span>JavaScript</span>
-          </div>
-          <div className="skill-item">
-            <img src="./img/biblioteca.png" alt="Ícone React" />
-            <span>React / React Native</span>
-          </div>
-          <div className="skill-item">
-            <img src="./img/mysql.png" alt="Ícone MySQL" />
-            <span>MySQL / SQLite</span>
-          </div>
-          <div className="skill-item">
-            <img src="./img/github.png" alt="Ícone GitHub" />
-            <span>Git & GitHub</span>
-          </div>
-          <div className="skill-item">
-            <img src="./img/css-3.png" alt="Ícone CSS" />
-            <span>Css</span>
-          </div>
-          <div className="skill-item">
-            <img src="./img/html-5.png" alt="Ícone HTML" />
-            <span>Html</span>
+          <div className="about-stats">
+            <div className="stat-card">
+              <span className="stat-number">2+</span>
+              <span className="stat-label">Anos de Experiência</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">15+</span>
+              <span className="stat-label">Projetos Concluídos</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">7+</span>
+              <span className="stat-label">Tecnologias</span>
+            </div>
           </div>
         </div>
       </Section>
 
-      <Section id="projects" title="Projetos Relevantes">
+      <Section id="skills" title="Habilidades Técnicas">
+        <div className="skills-grid">
+          <SkillCard name="Python / Flask" icon="./img/python.png" level="90%" />
+          <SkillCard name="JavaScript" icon="./img/js.png" level="85%" />
+          <SkillCard name="React / React Native" icon="./img/biblioteca.png" level="88%" />
+          <SkillCard name="MySQL / SQLite" icon="./img/mysql.png" level="82%" />
+          <SkillCard name="Git & GitHub" icon="./img/github.png" level="90%" />
+          <SkillCard name="CSS3" icon="./img/css-3.png" level="92%" />
+          <SkillCard name="HTML5" icon="./img/html-5.png" level="95%" />
+        </div>
+      </Section>
+
+      <Section id="projects" title="Projetos em Destaque">
         <div className="projects-grid">
-          <Card
+          <ProjectCard
             title="Sistema de Gerenciamento de Estoque"
-            subtitle="Python, Flask, SQLite"
+            subtitle="Moda & Estilo"
+            description="Sistema completo de controle de estoque com cadastro de produtos, análise de vendas e relatórios detalhados."
             images={[
               "/img/modaestilo.png",
               "/img/cadastrar.png",
               "/img/analisevendas.png",
               "/img/historicovendas.png"
             ]}
+            tags={["Python", "Flask", "SQLite", "Chart.js"]}
             onImageClick={openPopup}
-          >
-            <p>Cadastro, controle e relatórios do estoque.</p>
-          </Card>
-          <Card title="CRUDs e APIs REST em Flask" subtitle="Integrações de dados">
-            <p>Integrações de dados com bancos relacionais.</p>
-          </Card>
-          <Card title="Portfólio em React" subtitle="Responsivo & Deploy Vercel">
-            <p>Site responsivo com deploy em Vercel.</p>
-          </Card>
+          />
+          <ProjectCard
+            title="APIs REST com Flask"
+            subtitle="Backend & Integrações"
+            description="Desenvolvimento de APIs RESTful completas com autenticação JWT, validações e integração com bancos de dados relacionais."
+            tags={["Flask", "REST API", "JWT", "MySQL"]}
+            onImageClick={openPopup}
+          />
+          <ProjectCard
+            title="Portfólio Interativo"
+            subtitle="React & Design Moderno"
+            description="Site responsivo e moderno com animações suaves, tema claro/escuro e deploy automatizado na Vercel."
+            tags={["React", "CSS3", "Vercel", "Responsive"]}
+            onImageClick={openPopup}
+          />
         </div>
       </Section>
 
       <Section id="experience" title="Experiência Profissional">
-        <div className="experience">
-          <Card title="Estagiário do Espaço Maker — SESI-SP" subtitle="2025 – Atual">
-            <ul>
-              <li>Auxílio em robótica, programação e modelagem 3D.</li>
-              <li>Suporte em impressoras 3D e cortadora a laser.</li>
-            </ul>
-          </Card>
-          <Card title="Programador de Sistemas — Ferro e Aço Rossetti" subtitle="2023 – 2024">
-            <ul>
-              <li>Desenvolvimento e manutenção de sistemas internos.</li>
-              <li>Integração de soluções para controle de dados.</li>
-            </ul>
-          </Card>
+        <div className="experience-grid">
+          <ExperienceCard
+            title="Estagiário do Espaço Maker"
+            company="SESI-SP"
+            period="2025 – Atual"
+            description="Apoio técnico em projetos de robótica educacional, programação e fabricação digital."
+            achievements={[
+              "Auxílio em projetos de robótica com Arduino e Raspberry Pi",
+              "Suporte em impressoras 3D e cortadora a laser",
+              "Treinamento de alunos em programação e modelagem 3D"
+            ]}
+          />
+          <ExperienceCard
+            title="Programador de Sistemas"
+            company="Ferro e Aço Rossetti"
+            period="2023 – 2024"
+            description="Desenvolvimento e manutenção de sistemas internos para gestão empresarial."
+            achievements={[
+              "Criação de sistemas de controle de estoque e vendas",
+              "Integração com bancos de dados MySQL",
+              "Automação de processos administrativos com Python"
+            ]}
+          />
         </div>
       </Section>
 
-      <Section id="contact" title="Entre em Contato">
+      <Section id="contact" title="Vamos Conversar?">
         <div className="contact-container">
+          <p className="contact-intro">
+            Estou sempre aberto a novas oportunidades e colaborações. Entre em contato!
+          </p>
           <a href="mailto:jpbertelli10@gmail.com" className="contact-email">
-            <img src="/img/gmail.png" alt="Gmail" className="icon" />
-            jpbertelli10@gmail.com
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M3 8L10.89 13.26C11.2187 13.4793 11.6049 13.5963 12 13.5963C12.3951 13.5963 12.7813 13.4793 13.11 13.26L21 8M5 19H19C19.5304 19 20.0391 18.7893 20.4142 18.4142C20.7893 18.0391 21 17.5304 21 17V7C21 6.46957 20.7893 5.96086 20.4142 5.58579C20.0391 5.21071 19.5304 5 19 5H5C4.46957 5 3.96086 5.21071 3.58579 5.58579C3.21071 5.96086 3 6.46957 3 7V17C3 17.5304 3.21071 18.0391 3.58579 18.4142C3.96086 18.7893 4.46957 19 5 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            <span>jpbertelli10@gmail.com</span>
           </a>
-          <div className="social-icons">
-            <a href="https://github.com/JotapBertelli" target="_blank" rel="noreferrer">
-              <img src="/img/github.png" alt="GitHub" className="icon" />
+          <div className="social-links">
+            <a href="https://github.com/JotapBertelli" target="_blank" rel="noreferrer" className="social-link">
+              <img src="/img/github.png" alt="GitHub" />
+              <span>GitHub</span>
             </a>
-            <a href="https://www.linkedin.com/in/joão-pedro-da-silva-bertelli-b68ba6275" target="_blank" rel="noreferrer">
-              <img src="/img/linkedin.png" alt="Linkedin" className="icon" />
+            <a href="https://www.linkedin.com/in/joão-pedro-da-silva-bertelli-b68ba6275" target="_blank" rel="noreferrer" className="social-link">
+              <img src="/img/linkedin.png" alt="LinkedIn" />
+              <span>LinkedIn</span>
             </a>
           </div>
         </div>
       </Section>
 
-      <footer>
-        © 2025 João Pedro Bertelli — Feito com React
+      <footer className="footer">
+        <div className="footer-content">
+          <p>© 2025 João Pedro Bertelli</p>
+          <p>Desenvolvido com React & paixão por código ❤️</p>
+        </div>
+        <div className="footer-waves">
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+          </svg>
+        </div>
       </footer>
 
       {popupData && (
         <div className="popup-overlay" onClick={closePopup}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <span className="popup-close" onClick={closePopup}>
-              &times;
-            </span>
+            <button className="popup-close" onClick={closePopup}>
+              <FaTimes />
+            </button>
             <img src={popupData.src} alt={popupData.title} className="popup-image" />
           </div>
         </div>
       )}
+
     </div>
   );
 }
