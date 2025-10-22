@@ -1,18 +1,9 @@
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 /* ========================================================================== */
 /* ============           COMPONENTES REUTILIZÁVEIS          ================ */
 /* ========================================================================== */
-
 const Navbar = ({ toggleTheme }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -49,6 +40,11 @@ const Navbar = ({ toggleTheme }) => {
       </div>
 
       <div className={`mobile-nav-links ${isMenuOpen ? 'open' : ''}`}>
+        {/* ✅ ADICIONE ESTE BOTÃO AQUI DENTRO */}
+        <button className="close-menu-btn" onClick={closeMenu}>
+          <FaTimes />
+        </button>
+
         <a href="#about" onClick={closeMenu}>Sobre</a>
         <a href="#skills" onClick={closeMenu}>Skills</a>
         <a href="#projects" onClick={closeMenu}>Projetos</a>
@@ -85,7 +81,7 @@ const Hero = () => {
         }}
       ></div>
       <div className="hero-content">
-        <div className="hero-badge">Desenvolvedor Full Stack</div>
+        <div className="hero-badge">Desenvolvedor Júnior full stack</div>
         <h2 className="hero-title">
           João Pedro da Silva <span className="gradient-text">Bertelli</span>
         </h2>
@@ -106,7 +102,7 @@ const Hero = () => {
               <path d="M7 10L13 10M13 10L10 7M13 10L10 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </a>
-          <a href="/Curriculo_Joao_Bertelli.docx" download className="secondary">
+          <a href="/cv-joaopedro.pdf" download className="secondary">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M10 3V13M10 13L13 10M10 13L7 10M3 17H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
@@ -294,7 +290,7 @@ export default function App() {
               <span className="stat-label">Anos de Experiência</span>
             </div>
             <div className="stat-card">
-              <span className="stat-number">15+</span>
+              <span className="stat-number">6+</span>
               <span className="stat-label">Projetos Concluídos</span>
             </div>
             <div className="stat-card">
@@ -333,12 +329,21 @@ export default function App() {
             onImageClick={openPopup}
           />
           <ProjectCard
-            title="APIs REST com Flask"
-            subtitle="Backend & Integrações"
-            description="Desenvolvimento de APIs RESTful completas com autenticação JWT, validações e integração com bancos de dados relacionais."
-            tags={["Flask", "REST API", "JWT", "MySQL"]}
-            onImageClick={openPopup}
-          />
+  title="Sistema de Cardápio Online Completo(Em desenvolvimento)"
+  subtitle="Restaurante Digital - Food Tech"
+  description="Plataforma web full-stack para gerenciamento de cardápio digital com painel administrativo, personalização de produtos, sistema de pedidos em tempo real e painel da cozinha. Inclui adicionais customizáveis, checkout com delivery/retirada e interface moderna responsiva."
+  images={[
+    "/img/foto1.png",
+      "/img/foto2.png",
+      "/img/foto3.png",
+      "/img/foto4.png",
+      "/img/foto5.png",
+      "/img/foto6.png",
+
+  ]}
+  tags={["React", "Django REST", "Python", "JavaScript", "SQLite", "Real-time"]}
+  onImageClick={openPopup}
+/>
           <ProjectCard
             title="Portfólio Interativo"
             subtitle="React & Design Moderno"
@@ -363,14 +368,14 @@ export default function App() {
             ]}
           />
           <ExperienceCard
-            title="Programador de Sistemas"
+            title="Programador de Sistemas da Informação"
             company="Ferro e Aço Rossetti"
             period="2023 – 2024"
             description="Desenvolvimento e manutenção de sistemas internos para gestão empresarial."
             achievements={[
-              "Criação de sistemas de controle de estoque e vendas",
-              "Integração com bancos de dados MySQL",
-              "Automação de processos administrativos com Python"
+              " Desenvolvimento e manutenção de sistemas internos em ambiente corporativo",
+              "Participação na implementação de soluções para controle e gerenciamento de dados",
+              "Apoio na integração de tecnologias para otimizar processos da empresa"
             ]}
           />
         </div>
@@ -403,7 +408,6 @@ export default function App() {
       <footer className="footer">
         <div className="footer-content">
           <p>© 2025 João Pedro Bertelli</p>
-          <p>Desenvolvido com React & paixão por código ❤️</p>
         </div>
         <div className="footer-waves">
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none">

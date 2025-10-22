@@ -266,6 +266,31 @@
           to { opacity: 1; }
         }
 
+        /* ✅ Botão de fechar dentro do menu mobile */
+.close-menu-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--color-border);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.close-menu-btn:hover {
+  background: var(--color-primary);
+  transform: rotate(90deg);
+  border-color: var(--color-primary);
+}
+
         /* Hero Section */
         .hero {
           min-height: 100vh;
