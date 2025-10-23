@@ -21,7 +21,7 @@ const Navbar = ({ toggleTheme }) => {
   return (
     <nav className={scrolled ? "scrolled" : ""}>
       <div className="container">
-        <h1 className="logo">João Bertelli</h1>
+        <h1 className="logo">João Pedro Bertelli</h1>
 
         <div className="desktop-nav-links">
           <a href="#about">Sobre</a>
@@ -85,9 +85,6 @@ const Hero = () => {
         <h2 className="hero-title">
           João Pedro da Silva <span className="gradient-text">Bertelli</span>
         </h2>
-        <p className="hero-subtitle">
-          Transformando ideias em <span className="highlight">experiências digitais</span> incríveis
-        </p>
         <div className="hero-tech-stack">
           <span>Python</span>
           <span>Flask</span>
@@ -303,13 +300,13 @@ export default function App() {
 
       <Section id="skills" title="Habilidades Técnicas">
         <div className="skills-grid">
-          <SkillCard name="Python / Flask" icon="./img/python.png" level="90%" />
-          <SkillCard name="JavaScript" icon="./img/js.png" level="85%" />
-          <SkillCard name="React / React Native" icon="./img/biblioteca.png" level="88%" />
-          <SkillCard name="MySQL / SQLite" icon="./img/mysql.png" level="82%" />
-          <SkillCard name="Git & GitHub" icon="./img/github.png" level="90%" />
-          <SkillCard name="CSS3" icon="./img/css-3.png" level="92%" />
-          <SkillCard name="HTML5" icon="./img/html-5.png" level="95%" />
+          <SkillCard name="Python / Flask" icon="./img/python.png"  />
+          <SkillCard name="JavaScript" icon="./img/js.png"/>
+          <SkillCard name="React / React Native" icon="./img/biblioteca.png"/>
+          <SkillCard name="MySQL / SQLite" icon="./img/mysql.png"/>
+          <SkillCard name="Git & GitHub" icon="./img/github.png"/>
+          <SkillCard name="CSS3" icon="./img/css-3.png" />
+          <SkillCard name="HTML5" icon="./img/html-5.png" />
         </div>
       </Section>
 
@@ -325,7 +322,7 @@ export default function App() {
               "/img/analisevendas.png",
               "/img/historicovendas.png"
             ]}
-            tags={["Python", "Flask", "SQLite", "Chart.js"]}
+            tags={["Python", "Flask", "SQLite"]}
             onImageClick={openPopup}
           />
           <ProjectCard
@@ -341,7 +338,7 @@ export default function App() {
       "/img/foto6.png",
 
   ]}
-  tags={["React", "Django REST", "Python", "JavaScript", "SQLite", "Real-time"]}
+  tags={["React", "Django REST", "Python", "JavaScript", "PostgreSQL", "Real-time"]}
   onImageClick={openPopup}
 />
           <ProjectCard
